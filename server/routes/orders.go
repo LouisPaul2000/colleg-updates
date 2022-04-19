@@ -27,12 +27,12 @@ func AddCustomer(c *gin.Context) {
 
 	var customer models.Customer
 
-	fmt.Print(customer)
 	if err := c.BindJSON(&customer); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		fmt.Println(err)
 		return
 	}
+	fmt.Print(customer)
 
 	validationErr := validate.Struct(customer)
 	if validationErr != nil {
@@ -107,8 +107,9 @@ func UpdateCustomer(c *gin.Context) {
 			"Cust_ID":    customer.Cust_ID,
 			"First_name": customer.First_name,
 			"Last_name":  customer.Last_name,
-			"DOB":        customer.DOB,
-			"Address":    customer.Address,
+			"City":       customer.City,
+			"Zip":        customer.Zip,
+			"State":      customer.State,
 		},
 	)
 
@@ -275,6 +276,41 @@ func GetProducts(c *gin.Context) {
 	defer cancel()
 
 	fmt.Println(product)
+
+	c.JSON(http.StatusOK, product)
+}
+
+func GetProductsChart(c *gin.Context) {
+
+	product := [][]interface{}{
+		{"Country", "2021 Products", "2022 Products"},
+		{"Canada", 8175000, 8008000},
+		{"Germany", 3792000, 3694000},
+		{"France", 2695000, 2896000},
+		{"Italy", 2099000, 1953000},
+		{"USA", 1526000, 1517000},
+	}
+
+	c.JSON(http.StatusOK, product)
+}
+
+func GetOrderChart(c *gin.Context) {
+
+	product := [][]interface{}{
+		{"Month", "Profit"},
+		{"January", 12.2},
+		{"February", 9.1},
+		{"March", 12.2},
+		{"April", 22.9},
+		{"May", 0.9},
+		{"June", 36.6},
+		{"July", 9.1},
+		{"August", 30.5},
+		{"Sepetember", 6.1},
+		{"October", 2.7},
+		{"November", 0.9},
+		{"December", 2.7},
+	}
 
 	c.JSON(http.StatusOK, product)
 }
